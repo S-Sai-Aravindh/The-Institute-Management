@@ -119,15 +119,70 @@ namespace Institute_Management.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateStudentProfile(int id, [FromBody] StudentDTO updatedStudentDto)
         {
-            var student = await _context.Students.FindAsync(id);
+            var student = await _context.Students
+                .Include(s => s.User)  // Ensure User is included
+                .FirstOrDefaultAsync(s => s.StudentId == id);
+
             if (student == null) return NotFound();
 
-            student.UserId = updatedStudentDto.UserId;
+            // Update User details
+            student.User.Name = updatedStudentDto.User.Name;
+            student.User.Email = updatedStudentDto.User.Email;
+            student.User.ContactDetails = updatedStudentDto.User.ContactDetails;
+            student.User.Role = updatedStudentDto.User.Role;
+
+            // Update Batch details if needed
             student.BatchId = updatedStudentDto.BatchId;
 
+            // Update Enrollments if needed
+            // You can also update enrollments, but it seems like only Batch and User need to be updated here.
+
             await _context.SaveChangesAsync();
-            return Ok(updatedStudentDto);
+
+            // Return the updated student profile
+            var updatedStudent = await _context.Students
+                .Include(s => s.User)
+                .Include(s => s.Enrollments)
+                .ThenInclude(e => e.Course)
+                .FirstOrDefaultAsync(s => s.StudentId == id);
+
+            var studentDto = new StudentDTO
+            {
+                StudentId = (int)updatedStudent.StudentId,
+                UserId = (int)updatedStudent.UserId,
+                BatchId = updatedStudent.BatchId,
+                User = new UserDTO
+                {
+                    UserId = (int)updatedStudent.User.UserId,
+                    Name = updatedStudent.User.Name,
+                    Email = updatedStudent.User.Email,
+                    Role = updatedStudent.User.Role,
+                    ContactDetails = updatedStudent.User.ContactDetails
+                },
+                Batch = updatedStudent.Batch != null ? new BatchDTO
+                {
+                    BatchId = (int)updatedStudent.Batch.BatchId,
+                    BatchName = updatedStudent.Batch.BatchName,
+                    BatchTiming = updatedStudent.Batch.BatchTiming,
+                    BatchType = updatedStudent.Batch.BatchType
+                } : null,
+                Enrollments = updatedStudent.Enrollments.Select(e => new EnrollmentDTO
+                {
+                    StudentId = (int)e.StudentId,
+                    CourseId = (int)e.CourseId,
+                    Course = new CourseDTO
+                    {
+                        CourseId = (int)e.Course.CourseId,
+                        CourseName = e.Course.CourseName,
+                        Description = e.Course.Description
+                    }
+                }).ToList()
+            };
+
+            return Ok(studentDto);
         }
+
+
 
         // 3. Get Available Courses
         [HttpGet("courses")]

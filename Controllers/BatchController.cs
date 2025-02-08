@@ -25,14 +25,14 @@ namespace Institute_Management.Controllers
                 .Include(b => b.Course)  // Ensure Course information is included
                 .Select(b => new BatchDTO
                 {
-                    BatchId = b.BatchId,
+                    BatchId = (int)b.BatchId,
                     BatchName = b.BatchName,
                     BatchTiming = b.BatchTiming,
                     BatchType = b.BatchType,
                     //CourseId = b.CourseId,
                     Course = new CourseDTO  // Include related course details in the DTO
                     {
-                        CourseId = b.Course.CourseId,
+                        CourseId = (int)b.Course.CourseId,
                         CourseName = b.Course.CourseName,
                         Description = b.Course.Description
                     }
@@ -51,14 +51,14 @@ namespace Institute_Management.Controllers
                 .Where(b => b.BatchId == id)
                 .Select(b => new BatchDTO
                 {
-                    BatchId = b.BatchId,
+                    BatchId = (int)b.BatchId,
                     BatchName = b.BatchName,
                     BatchTiming = b.BatchTiming,
                     BatchType = b.BatchType,
                     //CourseId = b.CourseId,
                     Course = new CourseDTO  // Include Course details in BatchDTO
                     {
-                        CourseId = b.Course.CourseId,
+                        CourseId = (int)b.Course.CourseId,
                         CourseName = b.Course.CourseName,
                         Description = b.Course.Description
                     }

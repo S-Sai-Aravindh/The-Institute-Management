@@ -26,13 +26,13 @@ namespace Institute_Management.Controllers
                 .Include(c => c.Teacher)  // Ensuring Teacher is loaded as well
                 .Select(c => new CourseDTO
                 {
-                    CourseId = c.CourseId,
+                    CourseId = (int)c.CourseId,
                     CourseName = c.CourseName,
                     Description = c.Description,
                     Teacher = new TeacherDTO
                     {
-                        TeacherId = c.Teacher.TeacherId,
-                        UserId = c.Teacher.UserId,
+                        TeacherId = (int)c.Teacher.TeacherId,
+                        UserId = (int)c.Teacher.UserId,
                         SubjectSpecialization = c.Teacher.SubjectSpecialization
                     }
                 })
@@ -50,13 +50,13 @@ namespace Institute_Management.Controllers
                 .Where(c => c.CourseId == id)
                 .Select(c => new CourseDTO
                 {
-                    CourseId = c.CourseId,
+                    CourseId = (int)c.CourseId,
                     CourseName = c.CourseName,
                     Description = c.Description,
                     Teacher = new TeacherDTO
                     {
-                        TeacherId = c.Teacher.TeacherId,
-                        UserId = c.Teacher.UserId,
+                        TeacherId = (int)c.Teacher.TeacherId,
+                        UserId = (int)c.Teacher.UserId,
                         SubjectSpecialization = c.Teacher.SubjectSpecialization
                     }
                 })

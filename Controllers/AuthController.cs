@@ -51,7 +51,7 @@ namespace Institute_Management.Controllers
 
             var userDto = new UserDTO
             {
-                UserId = user.UserId,
+                UserId = (int)user.UserId,
                 Name = user.Name,
                 Email = user.Email,
                 Role = user.Role,

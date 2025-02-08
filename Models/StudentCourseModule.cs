@@ -6,14 +6,16 @@ namespace Institute_Management.Models
     {
         public class StudentCourse
         {
-            public int StudentId { get; set; }
-            public int CourseId { get; set; }
+            public int? StudentId { get; set; }
+
+            public int? CourseId { get; set; }
 
             [ForeignKey("StudentId")]
-            public StudentModule.Student Student { get; set; }
+            public virtual StudentModule.Student? Student { get; set; }
 
             [ForeignKey("CourseId")]
-            public CourseModule.Course Course { get; set; }
+            public virtual CourseModule.Course? Course { get; set; }
         }
+
     }
 }

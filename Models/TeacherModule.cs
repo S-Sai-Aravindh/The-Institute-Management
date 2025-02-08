@@ -8,15 +8,19 @@ namespace Institute_Management.Models
     {
         public class Teacher
         {
+
             [Key]
-            public int TeacherId { get; set; }
-            public int UserId { get; set; }
-            public string SubjectSpecialization { get; set; }
+            public int? TeacherId { get; set; }
+
+            public int? UserId { get; set; }
+
+            public string SubjectSpecialization { get; set; } = string.Empty;
 
             [ForeignKey("UserId")]
-            public UserModule.User User { get; set; }
+            public virtual UserModule.User? User { get; set; }
 
-            public ICollection<Course> Courses { get; set; }
+            public virtual ICollection<CourseModule.Course> Courses { get; set; } = new List<CourseModule.Course>();
         }
+
     }
 }

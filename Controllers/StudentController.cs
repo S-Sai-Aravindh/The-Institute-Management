@@ -29,12 +29,12 @@ namespace Institute_Management.Controllers
                 .ThenInclude(e => e.Course)
                 .Select(s => new StudentDTO
                 {
-                    StudentId = s.StudentId,
-                    UserId = s.UserId,
+                    StudentId = (int)s.StudentId,
+                    UserId = (int)s.UserId,
                     BatchId = s.BatchId,
                     User = new UserDTO
                     {
-                        UserId = s.User.UserId,
+                        UserId = (int)s.User.UserId,
                         Name = s.User.Name,
                         Email = s.User.Email,
                         Role = s.User.Role,
@@ -42,18 +42,18 @@ namespace Institute_Management.Controllers
                     },
                     Batch = s.Batch != null ? new BatchDTO
                     {
-                        BatchId = s.Batch.BatchId,
+                        BatchId = (int)s.Batch.BatchId,
                         BatchName = s.Batch.BatchName,
                         BatchTiming = s.Batch.BatchTiming,
                         BatchType = s.Batch.BatchType
                     } : null,
                     Enrollments = s.Enrollments.Select(e => new EnrollmentDTO
                     {
-                        StudentId = e.StudentId,
-                        CourseId = e.CourseId,
+                        StudentId = (int)e.StudentId,
+                        CourseId = (int)e.CourseId,
                         Course = new CourseDTO
                         {
-                            CourseId = e.Course.CourseId,
+                            CourseId = (int)e.Course.CourseId,
                             CourseName = e.Course.CourseName,
                             Description = e.Course.Description
                         }
@@ -81,12 +81,12 @@ namespace Institute_Management.Controllers
 
             var studentDto = new StudentDTO
             {
-                StudentId = student.StudentId,
-                UserId = student.UserId,
+                StudentId = (int)student.StudentId,
+                UserId = (int)student.UserId,
                 BatchId = student.BatchId,
                 User = new UserDTO
                 {
-                    UserId = student.User.UserId,
+                    UserId = (int)student.User.UserId,
                     Name = student.User.Name,
                     Email = student.User.Email,
                     Role = student.User.Role,
@@ -94,18 +94,18 @@ namespace Institute_Management.Controllers
                 },
                 Batch = student.Batch != null ? new BatchDTO
                 {
-                    BatchId = student.Batch.BatchId,
+                    BatchId = (int)student.Batch.BatchId,
                     BatchName = student.Batch.BatchName,
                     BatchTiming = student.Batch.BatchTiming,
                     BatchType = student.Batch.BatchType
                 } : null,
                 Enrollments = student.Enrollments.Select(e => new EnrollmentDTO
                 {
-                    StudentId = e.StudentId,
-                    CourseId = e.CourseId,
+                    StudentId = (int)e.StudentId,
+                    CourseId = (int)e.CourseId,
                     Course = new CourseDTO
                     {
-                        CourseId = e.Course.CourseId,
+                        CourseId = (int)e.Course.CourseId,
                         CourseName = e.Course.CourseName,
                         Description = e.Course.Description
                     }
@@ -136,7 +136,7 @@ namespace Institute_Management.Controllers
             var courses = await _context.Courses
                 .Select(c => new CourseDTO
                 {
-                    CourseId = c.CourseId,
+                    CourseId = (int)c.CourseId,
                     CourseName = c.CourseName,
                     Description = c.Description
                 })
@@ -168,7 +168,7 @@ namespace Institute_Management.Controllers
                 .Where(b => _context.StudentCourses.Any(sc => sc.StudentId == studentId && sc.CourseId == b.CourseId))
                 .Select(b => new BatchDTO
                 {
-                    BatchId = b.BatchId,
+                    BatchId = (int)b.BatchId,
                     BatchName = b.BatchName,
                     BatchTiming = b.BatchTiming,
                     BatchType = b.BatchType

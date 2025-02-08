@@ -32,10 +32,10 @@ namespace Institute_Management.Controllers
             // Create a list of TeacherDTOs
             var teacherDtos = teachers.Select(t => new TeacherDTO
             {
-                TeacherId = t.TeacherId,
+                TeacherId = (int)t.TeacherId,
                 User = new UserDTO
                 {
-                    UserId = t.User.UserId,
+                    UserId = (int)t.User.UserId,
                     Name = t.User.Name,
                     Email = t.User.Email,
                     Role = t.User.Role,
@@ -43,7 +43,7 @@ namespace Institute_Management.Controllers
                 },
                 Courses = t.Courses.Select(c => new CourseDTO
                 {
-                    CourseId = c.CourseId,
+                    CourseId = (int)c.CourseId,
                     CourseName = c.CourseName,
                     Description = c.Description,
                     //Teacher = c.Teacher,
@@ -68,10 +68,10 @@ namespace Institute_Management.Controllers
             // Create a TeacherDTO
             var teacherDto = new TeacherDTO
             {
-                TeacherId = teacher.TeacherId,
+                TeacherId = (int)teacher.TeacherId,
                 User = new UserDTO
                 {
-                    UserId = teacher.UserId,
+                    UserId = (int)teacher.UserId,
                     Name = teacher.User.Name,
                     Email = teacher.User.Email,
                     Role = teacher.User.Role,
@@ -79,7 +79,7 @@ namespace Institute_Management.Controllers
                 },
                 Courses = teacher.Courses.Select(c => new CourseDTO
                 {
-                    CourseId = c.CourseId,
+                    CourseId = (int)c.CourseId,
                     CourseName = c.CourseName,
                     Description = c.Description,
                     //Teacher = c.Teacher,

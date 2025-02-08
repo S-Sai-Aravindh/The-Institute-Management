@@ -65,14 +65,9 @@ namespace Institute_Management.Controllers
             });
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AuthenticateUser([FromBody] UserModule.User request)
-        {
-            return await Authenticate(request);
-        }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Authenticate([FromBody] UserModule.User request)
+        public async Task<IActionResult> Authenticate([FromBody] LoginDTO request)
         {
             if (request == null || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
             {
@@ -95,6 +90,7 @@ namespace Institute_Management.Controllers
             return Ok(new { message = "Login successful", token });
         }
 
+
         [Authorize(Roles = "Admin")]
         [HttpGet("admin-data")]
         public IActionResult GetAdminData()
@@ -112,13 +108,34 @@ namespace Institute_Management.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] User user)
         {
+            if (user == null || string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password))
+            {
+                return BadRequest(new { message = "Invalid input. Email and Password are required." });
+            }
+
             if (await _context.Users.AnyAsync(u => u.Email == user.Email))
-                return BadRequest("User already exists.");
+            {
+                return Conflict(new { message = "User already exists." });
+            }
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Registration successful" });
+                return CreatedAtAction(nameof(Register), new { id = user.UserId }, new { message = "Registration successful" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    message = "An error occurred while processing your request.",
+                    error = ex.Message,
+                    suggestion = "Ensure the API URL is correct and the server is running."
+                });
+            }
         }
+
+
     }
 }
